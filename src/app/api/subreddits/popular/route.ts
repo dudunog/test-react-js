@@ -21,13 +21,9 @@ export async function GET(req: Request) {
 			},
 		})
 
-		if (response.ok) {
-			const data = await response.json()
+		const popularSubreddits = await response.json()
 
-			return Response.json(data)
-		}
-
-		throw new Error('Error fetching popular subreddits')
+		return Response.json(popularSubreddits)
 	} catch (err) {
 		if (err instanceof z.ZodError) {
 			return new Response('Invalid URL Params', { status: 422 })

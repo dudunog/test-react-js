@@ -1,6 +1,6 @@
 import SubredditList from '@/components/subreddit-list'
-import { api } from '@/data/api'
 import { Subreddit } from '@/data/types/subreddit'
+import { api } from '@/data/api'
 
 type GetPopularSubredditsResponse = {
 	data: { children: { kind: string; data: Subreddit }[] }
@@ -8,20 +8,23 @@ type GetPopularSubredditsResponse = {
 
 async function getPopularSubreddits(): Promise<GetPopularSubredditsResponse> {
 	const response = await api(
-		'/subreddits/popular?accessToken=eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdWNZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJsb2lkIiwiZXhwIjoxNzI5MjE0NDY0LjA0NDc5NSwiaWF0IjoxNzI5MTI4MDY0LjA0NDc5NSwianRpIjoiakRmMF9LelhfZkFQWFYwMWlCVkFRRTJnWEhZSWdnIiwiY2lkIjoiTnhsR3duaW96LXhNUlhwZTJ5Z0h5QSIsImxpZCI6InQyXzFiMDF6d29sMzEiLCJsY2EiOjE3MjkxMjgwNjQwMzIsInNjcCI6ImVKeUtWdEpTaWdVRUFBRF9fd056QVNjIiwiZmxvIjo2fQ.WTFVLwQeY6CUr00iQ1XRDfMbmAil74rKVQpYD6Z7dXfzS16Yazru9QqTw2RaKjCs9AD8yiXNov7t3lu088R8aOuferOfeC_CoGGWf8zi6Rdj0Qcjy8pbqRMItcTwfdY2JYJQvWE9OCz7RMhMYrk3K4RBhC9CRvY2uIf67HlIaOoMmPm_7n8gV2PACJZQqXjA6wTG3Ndj0PHab3OkM1CuRTh4x8NDJNzbmS8ADqlsgpqP4p3-coT2Y23R8RgebaZPH9zRdiJ-J8Z5IbG6P07fdxAQ5mvu0_4pykgFpSAhcFjgNPCIzGH6Z2ZwY2XN1Y33eCTjJR4XD5E6Fe8xtKHSRg',
+		'/subreddits/popular?accessToken=eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdWNZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJsb2lkIiwiZXhwIjoxNzI5MzA1ODU2LjYyODAzMywiaWF0IjoxNzI5MjE5NDU2LjYyODAzMywianRpIjoiX0hEeDdiOHVCYnZzWDA2UXFqR3YyZGtvMDA2b25RIiwiY2lkIjoiTnhsR3duaW96LXhNUlhwZTJ5Z0h5QSIsImxpZCI6InQyXzFiMm53bGFzbzMiLCJsY2EiOjE3MjkyMTk0NTY2MTUsInNjcCI6ImVKeUtWdEpTaWdVRUFBRF9fd056QVNjIiwiZmxvIjo2fQ.G_GqLDwpXJjYyNNZ8QeEX0Rq27dBGaHVVHnwpJSEmZEzdrQcsS8Lju50H6eV7l1AWZq2XscnPbxRMMeqSUOh5NwKMwh_mYjvr4X6wc7nCzTlIekbmCnI2iimdslDbb7EGoo3fcBCclI-N4gBnoHgPv0ekxPtMR37dw7FZPjPeS1--GkaJ_X_cozakgrIvGtpg49ITMBYqbdlmXuDW01vcAdcWp8oeHFhvDWKw_lgUr2lkXcPS2oMw91_vrqYOQvsOKcDDX1xl5-QEOLY1cW5f4ja9i0Io-94lL8Fk44ZkqttWpUwMcmuLpzJW0_hQ1lkrECAol2GUzjb_Q1Jy4e-hg',
 	)
 
-	if (response.ok) {
-		const subreddits = await response.json()
+	const subreddits = await response.json()
 
-		return subreddits
-	}
-
-	throw new Error('Error getting popular subreddits')
+	return subreddits
 }
 
 export default async function Home() {
 	const subreddits = await getPopularSubreddits()
 
-	return <SubredditList subreddits={subreddits.data.children} />
+	return (
+		<div className="max-w-4xl px-4 m-auto mt-10">
+			<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+				Reddit Explorer
+			</h2>
+			<SubredditList subreddits={subreddits.data.children} />
+		</div>
+	)
 }
