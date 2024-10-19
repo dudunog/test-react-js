@@ -23,8 +23,6 @@ export default function PostDetails({ post, comments }: PostDetailsProps) {
 		() => post.subreddit_name_prefixed.split('/')[1],
 		[post.subreddit_name_prefixed],
 	)
-	console.log(comments)
-
 	const handleGoBackToSubreddit = useCallback(() => {}, [])
 
 	return (

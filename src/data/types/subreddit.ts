@@ -17,3 +17,11 @@ export interface Subreddit {
 		}[]
 	}
 }
+
+export interface SubredditDetails {
+	title: string
+	banner_background_image: string
+	public_description: string
+	created: number
+	subscribers: number
+}
