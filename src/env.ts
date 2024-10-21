@@ -7,6 +7,7 @@ export const env = createEnv({
 		APP_AUTH_URL: z.string().url(),
 		REDDIT_CLIENT_ID: z.string(),
 		REDDIT_CLIENT_SECRET: z.string(),
+		NEXTAUTH_SECRET: z.string(),
 	},
 
 	client: {
@@ -22,5 +23,6 @@ export const env = createEnv({
 		NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
 		NEXT_PUBLIC_REDDIT_REDIRECT_URI:
 			process.env.NEXT_PUBLIC_REDDIT_REDIRECT_URI,
+		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 	},
 })

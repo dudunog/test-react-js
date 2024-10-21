@@ -1,6 +1,6 @@
 import { env } from '@/env'
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
 	try {
 		const res = await fetch(env.APP_AUTH_URL, {
 			method: 'POST',

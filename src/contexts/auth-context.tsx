@@ -2,13 +2,8 @@
 
 import { api } from '@/data/api'
 import { getCookie, hasCookie, setCookie } from 'cookies-next'
-import {
-	useContext,
-	createContext,
-	PropsWithChildren,
-	useEffect,
-	useState,
-} from 'react'
+import { useSession, signIn } from 'next-auth/react'
+import { useContext, createContext, PropsWithChildren, useEffect } from 'react'
 
 type AccessTokenResponse = {
 	access_token: string
@@ -21,40 +16,16 @@ type AuthContextData = {
 const AuthContext = createContext({} as AuthContextData)
 
 const AuthProvider = ({ children }: PropsWithChildren) => {
-	const [isFetching, setIsFetching] = useState<boolean>(false)
-	const accessToken = getCookie('accessToken')
+	const { data: session, status } = useSession()
 
 	useEffect(() => {
-		const fetchAccessToken = async () => {
-			if (!hasCookie('accessToken')) {
-				setIsFetching(true)
-
-				const response = await api('/auth/access-token', {
-					method: 'POST',
-				})
-
-				if (response.ok) {
-					const data = (await response.json()) as AccessTokenResponse
-					setCookie('accessToken', data.access_token)
-				} else {
-					console.error('Failed to fetch access token')
-				}
-
-				setIsFetching(false)
-			}
+		if (status === 'unauthenticated' && !session) {
+			void signIn()
 		}
-
-		if (!accessToken && !isFetching) {
-			fetchAccessToken()
-		}
-	}, [accessToken, isFetching])
-
-	if (isFetching) {
-		return <>Loading...</>
-	}
+	}, [session, status])
 
 	return (
-		<AuthContext.Provider value={{ accessToken: accessToken }}>
+		<AuthContext.Provider value={{ accessToken: '' }}>
 			{children}
 		</AuthContext.Provider>
 	)

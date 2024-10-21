@@ -2,6 +2,8 @@ import { Comment } from '@/data/types/comment'
 import { api } from '@/data/api'
 import PostDetails from '@/components/post-details'
 import { Post } from '@/data/types/post'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth-options'
 
 type PostDetailsProps = {
 	params: { id: string; postId: string }
@@ -18,8 +20,10 @@ async function getPost(
 	subredditName: string,
 	postId: string,
 ): Promise<GetSubredditPostsResponse> {
+	const session = await getServerSession(authOptions)
+
 	const response = await api(
-		`/subreddit/${subredditName}/post/${postId}?accessToken=eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdWNZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJsb2lkIiwiZXhwIjoxNzI5MzU5NzIxLjQxMzg2MywiaWF0IjoxNzI5MjczMzIxLjQxMzg2MywianRpIjoidWl4dXV4dkJteHgxMG0yalIzWVd6Y29iRnV3d2Z3IiwiY2lkIjoiTnhsR3duaW96LXhNUlhwZTJ5Z0h5QSIsImxpZCI6InQyXzFiNDc5dG00ZG0iLCJsY2EiOjE3MjkyNzMzMjE0MDEsInNjcCI6ImVKeUtWdEpTaWdVRUFBRF9fd056QVNjIiwiZmxvIjo2fQ.Y4jobWuvls9-nlmLgS3Jf-4LliT3hEO5ds4lFrlC63UFOQ-AxWGluecb0F4qrQvzXND9fdKvBPa_d0PypSYO9oCq3hvXOIyUzdgRwAq-cSE1TzNky7ALXTHU7DgwPWld1Ty352lAQEzQvJ_wpPKNZdrnpO32ZawqlLsria8Pfx8SN1rKwkWSQwcajK98VNsjoQ8zwnfx7eIS5U8-qLCErRJcmIL-LOyJTG1D5yoPkecpDZJFEUC-cngesztPWa22RWql3bqOB6XcKPJuLQoAEir_YcE0IO0UB92sg2ZjmG6pGOLtXJzAX7F-VI_IHkd28SgbdlihG0F6WIEAdxuC0w`,
+		`/subreddit/${subredditName}/post/${postId}?accessToken=${session?.accessToken}`,
 	)
 
 	const subreddit = await response.json()

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider } from 'next-themes'
+import LeftSidebar from '@/components/left-sidebar'
 import AuthProvider from '@/contexts/auth-context'
 import SidebarProvider from '@/contexts/sidebar-context'
-import LeftSidebar from '@/components/left-sidebar'
+import { NextAuthProvider } from '@/providers/next-auth'
 
 import './globals.css'
 
@@ -42,17 +43,19 @@ export default function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<AuthProvider>
-						<div className="min-h-screen flex">
-							<SidebarProvider>
-								<LeftSidebar />
-							</SidebarProvider>
+					<NextAuthProvider>
+						<AuthProvider>
+							<div className="min-h-screen flex">
+								<SidebarProvider>
+									<LeftSidebar />
+								</SidebarProvider>
 
-							<main className="flex-1 overflow-auto p-4 lg:p-6 lg:px-7">
-								{children}
-							</main>
-						</div>
-					</AuthProvider>
+								<main className="flex-1 overflow-auto p-4 lg:p-6 lg:px-7">
+									{children}
+								</main>
+							</div>
+						</AuthProvider>
+					</NextAuthProvider>
 				</ThemeProvider>
 			</body>
 		</html>
