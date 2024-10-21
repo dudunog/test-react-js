@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import './globals.css'
+import { ThemeProvider } from 'next-themes'
 import AuthProvider from '@/contexts/auth-context'
+import SidebarProvider from '@/contexts/sidebar-context'
+import LeftSidebar from '@/components/left-sidebar'
+
+import './globals.css'
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',
@@ -15,8 +19,8 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-	title: 'Solvefy - Test',
-	description: 'Solvefy - Test',
+	title: 'Reddit Explorer',
+	description: 'Reddit Explorer',
 }
 
 export default function RootLayout({
@@ -26,10 +30,30 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<head>
+				<link rel="icon" href="/reddit-logo.png" type="image/x-icon" />
+			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<AuthProvider>{children}</AuthProvider>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem
+					disableTransitionOnChange
+				>
+					<AuthProvider>
+						<div className="min-h-screen flex">
+							<SidebarProvider>
+								<LeftSidebar />
+							</SidebarProvider>
+
+							<main className="flex-1 overflow-auto p-4 lg:p-6 lg:px-7">
+								{children}
+							</main>
+						</div>
+					</AuthProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	)
